@@ -1,3 +1,6 @@
 [submodule "reactive-java"]
 	path = reactive-java
-	url = https://52708cc9470725bad7fb72c461746b9341b09b0c@github.com/durutheguru/reactive-java.git
+	url = https://github.com/durutheguru/reactive-java.git
+[submodule "reactive-samples"]
+	path = reactive-samples
+	url = https://github.com/durutheguru/reactive-samples.git
