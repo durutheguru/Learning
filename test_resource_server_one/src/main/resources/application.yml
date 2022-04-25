@@ -1,0 +1,26 @@
+
+code:
+  config:
+    resource-server:
+      resource-id: resource-server-0935971084
+
+
+logging:
+  level:
+    root: DEBUG
+
+
+server:
+  port: 8011
+
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt.jwk-set-uri: http://localhost:8080/oauth2/jwks
+
+

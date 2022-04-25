@@ -1,9 +1,8 @@
-package com.julianduru.learning.webflux.webfluxzero;
+package com.julianduru.learning.webflux.webfluxzero.webclient;
 
 import com.julianduru.learning.webflux.webfluxzero.dto.Response;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.WebClientResponseException;
 import reactor.test.StepVerifier;

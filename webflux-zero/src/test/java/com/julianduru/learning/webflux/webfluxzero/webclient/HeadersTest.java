@@ -1,4 +1,4 @@
-package com.julianduru.learning.webflux.webfluxzero;
+package com.julianduru.learning.webflux.webfluxzero.webclient;
 
 import com.julianduru.learning.webflux.webfluxzero.dto.MultiplyRequestDto;
 import com.julianduru.learning.webflux.webfluxzero.dto.Response;
@@ -10,7 +10,7 @@ import reactor.test.StepVerifier;
 /**
  * created by julian on 18/03/2022
  */
-public class PostRequestTest extends BaseTest {
+public class HeadersTest extends BaseTest {
 
 
     @Autowired
@@ -18,10 +18,14 @@ public class PostRequestTest extends BaseTest {
 
 
     @Test
-    public void postTest() {
+    public void headersTest() {
         var responseMono = webClient.post()
             .uri("reactive-math/multiply")
             .bodyValue(buildRequestDto(5, 2))
+            .headers(h -> {
+                h.set("someKey", "someValue");
+                h.set("anotherKey", "anotherValue");
+            })
             .retrieve()
             .bodyToMono(Response.class)
             .doOnNext(System.out::println);
@@ -39,5 +43,7 @@ public class PostRequestTest extends BaseTest {
 
         return dto;
     }
+
+
 
 }

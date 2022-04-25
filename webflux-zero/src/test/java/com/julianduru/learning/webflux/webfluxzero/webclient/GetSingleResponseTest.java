@@ -1,4 +1,4 @@
-package com.julianduru.learning.webflux.webfluxzero;
+package com.julianduru.learning.webflux.webfluxzero.webclient;
 
 import com.julianduru.learning.webflux.webfluxzero.dto.Response;
 import org.junit.jupiter.api.Test;

@@ -1,4 +1,4 @@
-package com.julianduru.learning.webflux.webfluxzero;
+package com.julianduru.learning.webflux.webfluxzero.webclient;
 
 import org.springframework.boot.test.context.SpringBootTest;
 

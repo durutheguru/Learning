@@ -1,4 +1,4 @@
-package com.julianduru.learning.webflux.webfluxzero;
+package com.julianduru.learning.webflux.webfluxzero.webclient;
 
 import com.julianduru.learning.webflux.webfluxzero.dto.MultiplyRequestDto;
 import com.julianduru.learning.webflux.webfluxzero.dto.Response;
@@ -8,9 +8,9 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.test.StepVerifier;
 
 /**
- * created by julian on 19/03/2022
+ * created by julian on 18/03/2022
  */
-public class AttributesTest extends BaseTest {
+public class PostRequestTest extends BaseTest {
 
 
     @Autowired
@@ -18,11 +18,10 @@ public class AttributesTest extends BaseTest {
 
 
     @Test
-    public void attributesTest() {
+    public void postTest() {
         var responseMono = webClient.post()
             .uri("reactive-math/multiply")
             .bodyValue(buildRequestDto(5, 2))
-            .attribute("auth", "bearer")
             .retrieve()
             .bodyToMono(Response.class)
             .doOnNext(System.out::println);
@@ -40,7 +39,5 @@ public class AttributesTest extends BaseTest {
 
         return dto;
     }
-
-
 
 }
