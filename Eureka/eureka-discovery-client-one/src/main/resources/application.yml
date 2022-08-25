@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: eureka-client-one
+server:
+  port: 9999
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+
+management:
+  endpoint:
+    beans.enabled: true
+    health.show-details: always
+    metrics.enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+
