@@ -10,12 +10,12 @@ import org.apache.kafka.common.header.internals.RecordHeader;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * created by julian on 06/11/2022
@@ -31,7 +31,7 @@ public class LibraryEventProducer {
     private final ObjectMapper objectMapper;
 
 
-    public void sendLibraryEvent(LibraryEvent event) throws JsonProcessingException {
+    public ListenableFuture<SendResult<String, String>> sendLibraryEvent(LibraryEvent event) throws JsonProcessingException {
         var key = String.valueOf(event.getLibraryEventId());
         var value = objectMapper.writeValueAsString(event);
 
@@ -50,6 +50,8 @@ public class LibraryEventProducer {
                 }
             }
         );
+
+        return listenableFuture;
     }
 
 
@@ -112,3 +114,4 @@ public class LibraryEventProducer {
 
 
 }
+

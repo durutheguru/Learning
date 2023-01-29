@@ -108,8 +108,8 @@ public class LibraryEventsControllerIntegrationTest {
 
         assertEquals(
         """
-                {"libraryEventId":null,"eventType":"NEW","book":{"bookId":123,"bookName":"Rage on the Night","bookAuthor":"Henry George"}}
-                """.trim(),
+        {"libraryEventId":null,"eventType":"NEW","book":{"bookId":123,"bookName":"Rage on the Night","bookAuthor":"Henry George"}}
+        """.trim(),
             consumerRecord.value()
         );
     }
