@@ -1,0 +1,5 @@
+com/julianduru/learning/lambda/crud/data/PublisherDataProvider.class
+com/julianduru/learning/lambda/crud/handlers/SaveBookHandlerTest.class
+com/julianduru/learning/lambda/crud/data/BookDataProvider.class
+com/julianduru/learning/lambda/crud/data/DataProvider.class
+com/julianduru/learning/lambda/crud/handlers/SavePublisherHandlerTest.class
