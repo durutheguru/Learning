@@ -1,3 +1,4 @@
+com/julianduru/learning/lambda/crud/handlers/book/SaveBookHandler.class
 com/julianduru/learning/lambda/crud/repository/BookRepository.class
 com/julianduru/learning/lambda/crud/models/Book.class
 com/julianduru/learning/lambda/crud/handlers/BaseHandler.class
@@ -5,13 +6,15 @@ com/julianduru/learning/lambda/crud/util/JSONUtil.class
 com/julianduru/learning/lambda/crud/util/LambdaContext.class
 com/julianduru/learning/lambda/crud/repository/PublisherRepository.class
 com/julianduru/learning/lambda/crud/util/NullAwareBeanUtils.class
-com/julianduru/learning/lambda/crud/handlers/SaveBookHandler.class
+com/julianduru/learning/lambda/crud/handlers/publisher/FindPublishersHandler.class
 com/julianduru/learning/lambda/crud/models/BaseEntity.class
 com/julianduru/learning/lambda/crud/util/HibernateUtil.class
+com/julianduru/learning/lambda/crud/handlers/book/DeleteBookHandler.class
 com/julianduru/learning/lambda/crud/repository/Repository.class
+com/julianduru/learning/lambda/crud/handlers/publisher/SavePublisherHandler.class
 com/julianduru/learning/lambda/crud/dto/CreateBookRequest.class
 com/julianduru/learning/lambda/crud/dto/CreatePublisherRequest.class
 com/julianduru/learning/lambda/crud/util/LambdaContext$1.class
-com/julianduru/learning/lambda/crud/handlers/SavePublisherHandler.class
+com/julianduru/learning/lambda/crud/handlers/book/FindBooksHandler.class
 com/julianduru/learning/lambda/crud/util/converter/LocalDateConverter.class
 com/julianduru/learning/lambda/crud/models/Publisher.class

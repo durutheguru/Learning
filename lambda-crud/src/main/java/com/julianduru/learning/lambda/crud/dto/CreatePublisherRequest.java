@@ -33,7 +33,6 @@ public class CreatePublisherRequest {
     private String fax;
 
 
-    //    @Column(nullable = false, unique = true, length = 100)
     private String email;
 
 

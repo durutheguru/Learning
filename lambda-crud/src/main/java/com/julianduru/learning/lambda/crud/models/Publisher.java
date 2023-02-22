@@ -12,6 +12,7 @@ import lombok.Data;
 public class Publisher extends BaseEntity {
 
 
+    @Column(nullable = false, unique = true, length = 200)
     private String name;
 
 
@@ -36,7 +37,7 @@ public class Publisher extends BaseEntity {
     private String fax;
 
 
-//    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = false, unique = true, length = 100)
     private String email;
 
 

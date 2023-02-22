@@ -1,5 +1,8 @@
+com/julianduru/learning/lambda/crud/handlers/book/FindBooksHandlerTest.class
+com/julianduru/learning/lambda/crud/data/CreateBookDataProvider.class
+com/julianduru/learning/lambda/crud/handlers/publisher/SavePublisherHandlerTest.class
 com/julianduru/learning/lambda/crud/data/PublisherDataProvider.class
-com/julianduru/learning/lambda/crud/handlers/SaveBookHandlerTest.class
+com/julianduru/learning/lambda/crud/data/CreatePublisherDataProvider.class
 com/julianduru/learning/lambda/crud/data/BookDataProvider.class
+com/julianduru/learning/lambda/crud/handlers/book/SaveBookHandlerTest.class
 com/julianduru/learning/lambda/crud/data/DataProvider.class
-com/julianduru/learning/lambda/crud/handlers/SavePublisherHandlerTest.class

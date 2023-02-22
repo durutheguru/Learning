@@ -20,12 +20,12 @@ public class Book extends BaseEntity {
     private String author;
 
 
-//    @Column(nullable = false, unique = true, length = 100)
+    @Column(nullable = false, unique = true, length = 100)
     private String isbn;
 
 
     @Convert(converter = LocalDateConverter.class)
-//    @Column(nullable = false)
+    @Column(nullable = false)
     private LocalDate publishedDate;
 
 
@@ -51,6 +51,14 @@ public class Book extends BaseEntity {
     @ManyToOne
     @JoinColumn(name = "publisher_id")
     private Publisher publisher;
+
+
+    public Book() {}
+
+
+    public Book(Long id) {
+        this.setId(id);
+    }
 
 
 }
