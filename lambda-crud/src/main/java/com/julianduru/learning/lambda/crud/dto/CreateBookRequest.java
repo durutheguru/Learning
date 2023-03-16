@@ -1,5 +1,9 @@
 package com.julianduru.learning.lambda.crud.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.julianduru.learning.lambda.crud.util.json.LocalDateDeserializer;
+import com.julianduru.learning.lambda.crud.util.json.LocalDateSerializer;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -45,3 +49,5 @@ public class CreateBookRequest {
 
 
 }
+
+

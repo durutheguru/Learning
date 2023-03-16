@@ -4,5 +4,6 @@
 /Users/dduru/IdeaProjects/Private/Learning/lambda-crud/src/test/java/com/julianduru/learning/lambda/crud/handlers/book/FindBooksHandlerTest.java
 /Users/dduru/IdeaProjects/Private/Learning/lambda-crud/src/test/java/com/julianduru/learning/lambda/crud/data/CreateBookDataProvider.java
 /Users/dduru/IdeaProjects/Private/Learning/lambda-crud/src/test/java/com/julianduru/learning/lambda/crud/data/BookDataProvider.java
+/Users/dduru/IdeaProjects/Private/Learning/lambda-crud/src/test/java/com/julianduru/learning/lambda/crud/handlers/publisher/FindPublishersHandlerTest.java
 /Users/dduru/IdeaProjects/Private/Learning/lambda-crud/src/test/java/com/julianduru/learning/lambda/crud/data/PublisherDataProvider.java
 /Users/dduru/IdeaProjects/Private/Learning/lambda-crud/src/test/java/com/julianduru/learning/lambda/crud/handlers/publisher/SavePublisherHandlerTest.java

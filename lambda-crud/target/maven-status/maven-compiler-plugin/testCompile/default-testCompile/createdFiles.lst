@@ -5,4 +5,5 @@ com/julianduru/learning/lambda/crud/data/PublisherDataProvider.class
 com/julianduru/learning/lambda/crud/data/CreatePublisherDataProvider.class
 com/julianduru/learning/lambda/crud/data/BookDataProvider.class
 com/julianduru/learning/lambda/crud/handlers/book/SaveBookHandlerTest.class
+com/julianduru/learning/lambda/crud/handlers/publisher/FindPublishersHandlerTest.class
 com/julianduru/learning/lambda/crud/data/DataProvider.class

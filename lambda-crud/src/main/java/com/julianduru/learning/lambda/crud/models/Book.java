@@ -25,9 +25,7 @@ public class Book extends BaseEntity {
 
 
     @Convert(converter = LocalDateConverter.class)
-    @Column(nullable = false)
     private LocalDate publishedDate;
-
 
 
     private String description;

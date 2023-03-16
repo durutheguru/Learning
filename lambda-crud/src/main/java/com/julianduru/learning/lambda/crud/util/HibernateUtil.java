@@ -50,22 +50,25 @@ public class HibernateUtil {
 				}
 
 				var properties = loadProps(env);;
-
-				var configuration = new Configuration()
-					.configure("hibernate.cfg.xml")
-					.addProperties(properties);
-
-				configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
+				initializeSessionFactory(properties);
 
 				runMigration(properties);
-
-				sessionFactory = configuration.buildSessionFactory();
 			}
 
 			return sessionFactory;
 		} catch (Throwable ex) {
 			throw new ExceptionInInitializerError(ex);
 		}
+	}
+
+
+	private static void initializeSessionFactory(Properties properties) {
+		var configuration = new Configuration()
+			.configure("hibernate.cfg.xml")
+			.addProperties(properties);
+
+		configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
+		sessionFactory = configuration.buildSessionFactory();
 	}
 
 
