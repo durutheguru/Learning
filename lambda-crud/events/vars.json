@@ -1,0 +1,9 @@
+{
+  "Parameters": {
+    "ENV": "local",
+    "JASYPT_PWD": "JDURU",
+    "DB_URL": "jdbc:mysql://docker.for.mac.localhost:3306/lambda_crud?createDatabaseIfNotExist=true&serverTimezone=UTC",
+    "DB_USER": "root",
+    "DB_PWD": ""
+  }
+}

@@ -18,6 +18,7 @@ import org.jasypt.properties.EncryptableProperties;
 
 import java.io.IOException;
 import java.sql.DriverManager;
+import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Callable;
 
@@ -48,6 +49,7 @@ public class HibernateUtil {
 				log.info("Building Session Factory");
 
 				var env = System.getenv("ENV");
+				log.info("ENV: {}", env);
 				if (StringUtils.isEmpty(env)) {
 					env = "local";
 				}
@@ -90,6 +92,16 @@ public class HibernateUtil {
 		props.forEach(
 			(k, v) -> decryptedProperties.put(k, props.getProperty(k.toString()))
 		);
+
+		decryptedProperties.putAll(
+			Map.of(
+				"hibernate.connection.url", System.getenv("DB_URL"),
+				"hibernate.connection.username", System.getenv("DB_USER"),
+				"hibernate.connection.password", System.getenv("DB_PWD")
+			)
+		);
+
+		log.debug("Loaded Properties: {}", decryptedProperties);
 
 		return decryptedProperties;
 	}
