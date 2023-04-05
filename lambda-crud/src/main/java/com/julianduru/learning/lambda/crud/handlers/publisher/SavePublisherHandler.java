@@ -26,7 +26,7 @@ public class SavePublisherHandler extends BaseHandler<CreatePublisherRequest, Pu
 
         try {
             var publisher = readPublisherFromInput(input);
-            return publisherRepository.save(publisher);
+            return publisherRepository.save(hibernateUtil.getSessionFactory(), publisher);
         }
         catch (Throwable t) {
             log.error("Error: " + t.getMessage(), t);

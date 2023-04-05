@@ -2,6 +2,7 @@ package com.julianduru.learning.lambda.crud.repository;
 
 import com.julianduru.learning.lambda.crud.util.HibernateUtil;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
@@ -12,8 +13,8 @@ import java.util.List;
 public abstract class Repository<T> {
 
 
-    public T save(T object) throws Exception {
-        var session = HibernateUtil.getSessionFactory().openSession();
+    public T save(SessionFactory sessionFactory, T object) throws Exception {
+        var session = sessionFactory.openSession();
         var transaction = session.beginTransaction();
 
         session.persist(object);
@@ -31,9 +32,9 @@ public abstract class Repository<T> {
     }
 
 
-    public List<T> findAll() {
+    public List<T> findAll(SessionFactory sessionFactory) {
         try {
-            var session = HibernateUtil.getSessionFactory().openSession();
+            var session = sessionFactory.openSession();
 
             var list = session.createQuery(
                 "from " + getEntityName(), getEntityClass()
@@ -56,8 +57,8 @@ public abstract class Repository<T> {
     }
 
 
-    public T delete (T object) {
-        var session = HibernateUtil.getSessionFactory().openSession();
+    public T delete (SessionFactory sessionFactory, T object) {
+        var session = sessionFactory.openSession();
         var transaction = session.beginTransaction();
 
         session.remove(object);

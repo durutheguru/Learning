@@ -28,7 +28,7 @@ public class SaveBookHandler extends BaseHandler<CreateBookRequest, Book> {
 
         try {
             var book = readBookFromInput(input);
-            return bookRepository.save(book);
+            return bookRepository.save(hibernateUtil.getSessionFactory(), book);
         }
         catch (Throwable t) {
             log.error("Error: " + t.getMessage(), t);

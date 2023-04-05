@@ -25,14 +25,14 @@ public class CreateBookDataProvider implements DataProvider<CreateBookRequest> {
         bookRequest.setSmallThumbnail(faker.internet().avatar());
         bookRequest.setLanguage(faker.lorem().word());
         bookRequest.setPreviewLink(faker.internet().url());
-        bookRequest.setPublisherId(
-            publisherRepository
-                .findAll()
-                .stream()
-                .findAny()
-                .orElseThrow()
-                .getId()
-        );
+//        bookRequest.setPublisherId(
+//            publisherRepository
+//                .findAll()
+//                .stream()
+//                .findAny()
+//                .orElseThrow()
+//                .getId()
+//        );
 
         return bookRequest;
     }

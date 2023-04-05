@@ -19,7 +19,7 @@ public class FindBooksHandler extends BaseHandler<Map<String, String>, List<Book
 
     @Override
     public List<Book> handleRequest(Map<String, String> input, Context context) {
-        return bookRepository.findAll();
+        return bookRepository.findAll(hibernateUtil.getSessionFactory());
     }
 
 

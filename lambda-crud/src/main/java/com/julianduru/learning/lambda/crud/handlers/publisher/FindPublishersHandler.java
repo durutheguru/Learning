@@ -18,7 +18,7 @@ public class FindPublishersHandler extends BaseHandler<Map<String, String>, List
 
     @Override
     public List<Publisher> handleRequest(Map<String, String> input, Context context) {
-        return publisherRepository.findAll();
+        return publisherRepository.findAll(hibernateUtil.getSessionFactory());
     }
 
 

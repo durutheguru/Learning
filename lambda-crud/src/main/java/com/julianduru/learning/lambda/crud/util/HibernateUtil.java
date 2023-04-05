@@ -24,9 +24,10 @@ import java.util.concurrent.Callable;
 @Slf4j
 public class HibernateUtil {
 
-	private static SessionFactory sessionFactory;
+	private SessionFactory sessionFactory;
 
-	static {
+
+	public void setup() {
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			try {
 				if (sessionFactory != null && !sessionFactory.isClosed()) {
@@ -41,18 +42,22 @@ public class HibernateUtil {
 	}
 
 
-	private static SessionFactory buildSessionFactory() {
+	private SessionFactory buildSessionFactory() {
 		try {
 			if (sessionFactory == null) {
+				log.info("Building Session Factory");
+
 				var env = System.getenv("ENV");
 				if (StringUtils.isEmpty(env)) {
 					env = "local";
 				}
 
-				var properties = loadProps(env);;
-				initializeSessionFactory(properties);
-
+				var properties = loadProps(env);
 				runMigration(properties);
+				initializeSessionFactory(properties);
+			}
+			else {
+				log.info("Returning existing Session Factory");
 			}
 
 			return sessionFactory;
@@ -62,13 +67,15 @@ public class HibernateUtil {
 	}
 
 
-	private static void initializeSessionFactory(Properties properties) {
+	private void initializeSessionFactory(Properties properties) {
 		var configuration = new Configuration()
 			.configure("hibernate.cfg.xml")
 			.addProperties(properties);
 
 		configuration.setPhysicalNamingStrategy(new CamelCaseToUnderscoresNamingStrategy());
 		sessionFactory = configuration.buildSessionFactory();
+
+		log.info("Done initializing Session Factory");
 	}
 
 
@@ -119,12 +126,12 @@ public class HibernateUtil {
 	}
 
 
-	public static Callable<SessionFactory> getSessionFactoryCallable() {
+	public Callable<SessionFactory> getSessionFactoryCallable() {
 		return () -> sessionFactory;
 	}
 
 
-	public static SessionFactory getSessionFactory() throws RuntimeException {
+	public SessionFactory getSessionFactory() throws RuntimeException {
 		try {
 			return getSessionFactoryCallable().call();
 		}
@@ -134,7 +141,12 @@ public class HibernateUtil {
 	}
 
 
-	public static void shutdown() throws Exception {
+	public void setSessionFactory(SessionFactory sessionFactory) {
+		this.sessionFactory = sessionFactory;
+	}
+
+
+	public void shutdown() throws Exception {
 		getSessionFactoryCallable().call().close();
 	}
 

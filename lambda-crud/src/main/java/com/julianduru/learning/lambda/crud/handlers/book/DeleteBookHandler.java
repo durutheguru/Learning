@@ -22,7 +22,7 @@ public class DeleteBookHandler extends BaseHandler<APIGatewayProxyRequestEvent, 
         }
 
         var idLong = Long.parseLong(id);
-        return bookRepository.delete(new Book(idLong));
+        return bookRepository.delete(hibernateUtil.getSessionFactory(), new Book(idLong));
     }
 
 
