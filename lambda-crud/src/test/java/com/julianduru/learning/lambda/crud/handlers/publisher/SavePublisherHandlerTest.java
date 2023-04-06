@@ -1,7 +1,9 @@
 package com.julianduru.learning.lambda.crud.handlers.publisher;
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.julianduru.learning.lambda.crud.data.CreatePublisherDataProvider;
 import com.julianduru.learning.lambda.crud.handlers.publisher.SavePublisherHandler;
+import com.julianduru.learning.lambda.crud.util.JSONUtil;
 import com.julianduru.learning.lambda.crud.util.LambdaContext;
 import org.junit.jupiter.api.Test;
 
@@ -17,13 +19,12 @@ public class SavePublisherHandlerTest {
 
 
     @Test
-    public void savePublisher() {
+    public void savePublisher() throws Exception {
         var handler = new SavePublisherHandler();
+        var input = new APIGatewayProxyRequestEvent();
+        input.setBody(JSONUtil.asJsonString(dataProvider.provide()));
 
-
-        var publisher = handler.handleRequest(
-            dataProvider.provide(), new LambdaContext()
-        );
+        var publisher = handler.handleRequest(input, new LambdaContext());
 
         assertThat(publisher).isNotNull();
     }

@@ -38,5 +38,5 @@ s3_prefix = "lambda-crud"
 region = "us-east-1"
 confirm_changeset = true
 capabilities = "CAPABILITY_IAM"
-parameter_overrides = "DBName=\"lambda_crud\" DBUser=\"root\" DBPassword=\"Super445}{}{\""
+parameter_overrides = "ENV=\"prod\" DBName=\"lambda_crud\" JASYPT_PWD=\"JDURU\" DB_URL=\"OrderedDict([('Fn::GetAtt', ['DataSource', 'Endpoint.Address'])])\" DB_USER=\"root\" DB_PWD=\"Super445}{}{\""
 image_repositories = []

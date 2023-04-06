@@ -1,5 +1,42 @@
 {
-  "name": "Ebi Duru Publisher",
-  "description": "Just a simple Publisher",
-  "email": "eduru@yahoo.com"
+  "resource": "/publisher",
+  "path": "/publisher",
+  "httpMethod": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "Accept": "application/json"
+  },
+  "multiValueHeaders": {
+    "Content-Type": ["application/json"],
+    "Accept": ["application/json"]
+  },
+  "queryStringParameters": null,
+  "multiValueQueryStringParameters": null,
+  "pathParameters": null,
+  "stageVariables": null,
+  "requestContext": {
+    "accountId": "123456789012",
+    "resourceId": "123456",
+    "stage": "prod",
+    "requestId": "c6af9ac6-7b61-11e6-9a41-93e8deadbeef",
+    "identity": {
+      "cognitoIdentityPoolId": null,
+      "accountId": null,
+      "cognitoIdentityId": null,
+      "caller": null,
+      "apiKey": null,
+      "sourceIp": "127.0.0.1",
+      "cognitoAuthenticationType": null,
+      "cognitoAuthenticationProvider": null,
+      "userArn": null,
+      "userAgent": "Custom User Agent String",
+      "user": null
+    },
+    "resourcePath": "/publisher",
+    "httpMethod": "POST",
+    "apiId": "1234567890"
+  },
+  "body": "{\n  \"address\": \"1000 Strand, London WC2R 0RL, United Kingdom\",\n  \"website\": \"http://www.pub.mania.co.uk.ng/\",\n  \"phone\": \"+22 20 7925 6000\",\n  \"logo\": \"http://books.google.com/books/content?id=5x0EAAAAMAAJ&printsec=frontcover&img=1&zoom=1&edge=curl&source=gbs_api\",\n  \"email\": \"book@gmail.com\",\n  \"description\": \"Publisher Mania the very best in the game\",\n  \"name\": \"XYZ Publisher Mania\"\n}\n",
+  "isBase64Encoded": false
 }
+
