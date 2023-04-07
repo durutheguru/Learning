@@ -16,7 +16,7 @@ public class FindPublishersHandlerTest {
     @Test
     public void findPublishers() {
         var handler = new FindPublishersHandler();
-        var publishers = handler.handleRequest(Map.of(), null);
+        var publishers = handler.handleRequest(null, null);
 
         log.info("Publishers: {}", JSONUtil.asJsonString(publishers, "--"));
     }

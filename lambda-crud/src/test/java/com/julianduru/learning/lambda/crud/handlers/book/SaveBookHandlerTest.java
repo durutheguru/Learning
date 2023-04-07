@@ -1,7 +1,8 @@
 package com.julianduru.learning.lambda.crud.handlers.book;
 
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.julianduru.learning.lambda.crud.data.CreateBookDataProvider;
-import com.julianduru.learning.lambda.crud.handlers.book.SaveBookHandler;
+import com.julianduru.learning.lambda.crud.util.JSONUtil;
 import com.julianduru.learning.lambda.crud.util.LambdaContext;
 import org.junit.jupiter.api.Test;
 
@@ -17,14 +18,16 @@ public class SaveBookHandlerTest {
 
 
     @Test
-    public void saveBook() {
+    public void saveBook() throws Exception {
         var handler = new SaveBookHandler();
+        var input = new APIGatewayProxyRequestEvent();
+        input.setBody(JSONUtil.asJsonString(dataProvider.provide()));
 
-        var book = handler.handleRequest(
-            dataProvider.provide(), new LambdaContext()
+        var response = handler.handleRequest(
+            input, new LambdaContext()
         );
 
-        assertThat(book).isNotNull();
+        assertThat(response).isNotNull();
     }
 
 

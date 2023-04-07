@@ -1,6 +1,8 @@
 package com.julianduru.learning.lambda.crud.handlers.book;
 
 import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.julianduru.learning.lambda.crud.dto.CreateBookRequest;
 import com.julianduru.learning.lambda.crud.handlers.BaseHandler;
 import com.julianduru.learning.lambda.crud.models.Book;
@@ -10,25 +12,30 @@ import com.julianduru.learning.lambda.crud.util.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * created by julian on 03/02/2023
  */
 @Slf4j
-public class SaveBookHandler extends BaseHandler<CreateBookRequest, Book> {
+public class SaveBookHandler extends BaseHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
 
 
     private final BookRepository bookRepository = new BookRepository();
 
 
     @Override
-    public Book handleRequest(CreateBookRequest input, Context context) {
-        log.info("Input: " + JSONUtil.asJsonString(input, "--"));
+    public APIGatewayProxyResponseEvent handleRequest(APIGatewayProxyRequestEvent request, Context context) {
+        log.info("Input: " + JSONUtil.asJsonString(request, "--"));
 
         try {
+            var input = JSONUtil.fromJsonString(request.getBody(), CreateBookRequest.class);
             var book = readBookFromInput(input);
-            return bookRepository.save(hibernateUtil.getSessionFactory(), book);
+            book = bookRepository.save(hibernateUtil.getSessionFactory(), book);
+
+            var response = new APIGatewayProxyResponseEvent();
+            response.setBody(JSONUtil.asJsonString(book, ""));
+
+            return response;
         }
         catch (Throwable t) {
             log.error("Error: " + t.getMessage(), t);

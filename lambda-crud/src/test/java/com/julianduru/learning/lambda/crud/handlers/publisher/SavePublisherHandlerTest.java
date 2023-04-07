@@ -2,7 +2,6 @@ package com.julianduru.learning.lambda.crud.handlers.publisher;
 
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.julianduru.learning.lambda.crud.data.CreatePublisherDataProvider;
-import com.julianduru.learning.lambda.crud.handlers.publisher.SavePublisherHandler;
 import com.julianduru.learning.lambda.crud.util.JSONUtil;
 import com.julianduru.learning.lambda.crud.util.LambdaContext;
 import org.junit.jupiter.api.Test;
