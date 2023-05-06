@@ -15,12 +15,16 @@ import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.dsl.context.IntegrationFlowContext;
+import org.springframework.integration.file.dsl.Files;
+import org.springframework.integration.file.transformer.FileToStringTransformer;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.SystemPropertyUtils;
 
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -30,8 +34,9 @@ import java.util.concurrent.TimeUnit;
 public class IntegrationApplication {
 
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         SpringApplication.run(IntegrationApplication.class, args);
+        Thread.currentThread().join();
     }
 
 
@@ -80,17 +85,42 @@ public class IntegrationApplication {
     @Bean
     public IntegrationFlow buildFlow() {
         return IntegrationFlow
-//            .from(myMessageSource, p -> p.poller(spec -> spec.fixedDelay(seconds, TimeUnit.SECONDS)))
             .from(greetingsRequests())
             .filter(String.class, source -> source.contains("holla"))
             .transform(
                 (GenericTransformer<String, String>) String::toUpperCase
             )
+            .handle((GenericHandler<String>) (payload, headers) -> {
+                System.out.println("Observing payload: " + payload);
+                return payload;
+            })
             .channel(greetingsResults())
-//            .handle((GenericHandler<String>) (payload, headers) -> {
-//                System.out.printf("Here's the payload: %s%n", payload);
-//                return null;
-//            })
+            .get();
+    }
+
+
+
+    @Bean
+    IntegrationFlow inboundFileSystemFlow() {
+        var inboundFileAdapter = Files.inboundAdapter(
+            Path.of(SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions")).toFile()
+        ).autoCreateDirectory(true);
+
+        return IntegrationFlow.from(inboundFileAdapter)
+            .transform(new FileToStringTransformer())
+            .channel(greetingsRequests())
+            .get();
+    }
+
+
+    @Bean
+    IntegrationFlow outboundFileSystemFlow() {
+        var outboundFileAdapter = Files.outboundAdapter(
+            Path.of(SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions_out")).toFile()
+        ).autoCreateDirectory(true);
+
+        return IntegrationFlow.from(greetingsResults())
+            .handle(outboundFileAdapter)
             .get();
     }
 
