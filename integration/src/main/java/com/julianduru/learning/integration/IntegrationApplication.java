@@ -5,6 +5,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.core.GenericHandler;
@@ -46,9 +47,16 @@ public class IntegrationApplication {
 
 
 	@Bean
-	static MessageChannel greetings() {
+	MessageChannel greetingsRequests() {
 		return MessageChannels.direct().get();
 	}
+
+
+
+    @Bean
+    MessageChannel greetingsResults() {
+        return MessageChannels.direct().get();
+    }
 
 
 //    @Bean
@@ -69,18 +77,20 @@ public class IntegrationApplication {
 
 
 
-    private static IntegrationFlow buildFlow(MyMessageSource myMessageSource, int seconds, String filterText) {
+    @Bean
+    public IntegrationFlow buildFlow() {
         return IntegrationFlow
 //            .from(myMessageSource, p -> p.poller(spec -> spec.fixedDelay(seconds, TimeUnit.SECONDS)))
-            .from(greetings())
-            .filter(String.class, source -> source.contains(filterText))
+            .from(greetingsRequests())
+            .filter(String.class, source -> source.contains("holla"))
             .transform(
                 (GenericTransformer<String, String>) String::toUpperCase
             )
-            .handle((GenericHandler<String>) (payload, headers) -> {
-                System.out.printf("Here's the payload for filter text [ %s ]: %s%n", filterText, payload);
-                return null;
-            })
+            .channel(greetingsResults())
+//            .handle((GenericHandler<String>) (payload, headers) -> {
+//                System.out.printf("Here's the payload: %s%n", payload);
+//                return null;
+//            })
             .get();
     }
 
@@ -100,16 +110,17 @@ class Runner implements ApplicationRunner {
 
     public void run(ApplicationArguments args) {
         for (int i = 0; i < 100; i++) {
-            this.greetingsClient.greet(IntegrationApplication.text());
+            System.out.println(this.greetingsClient.greet(IntegrationApplication.text()));
         }
     }
 
 }
 
 
-@MessagingGateway(defaultRequestChannel = "greetings")
+@MessagingGateway
 interface GreetingsClient {
 
+    @Gateway(requestChannel = "greetingsRequests", replyChannel = "greetingsResults")
     String greet(String text);
 
 }
