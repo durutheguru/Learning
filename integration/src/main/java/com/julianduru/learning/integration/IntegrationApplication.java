@@ -26,7 +26,7 @@ import java.nio.file.Path;
 import java.time.Instant;
 import java.util.function.Consumer;
 
-@IntegrationComponentScan
+//@IntegrationComponentScan
 @SpringBootApplication
 public class IntegrationApplication {
 
