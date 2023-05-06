@@ -31,36 +31,30 @@ public class FileSyncIntegrationConfig {
 //        return MessageChannels.direct().get();
 //    }
 
-    @ServiceActivator(outputChannel = "fileChannel")
-    public String text() {
-        return "Hello World: " + Instant.now();
-    }
-
 
     @Bean
     IntegrationFlow fileSystemFlow(
-//        MGateway gateway
+        MGateway gateway
     ) {
-        new Thread(() -> {
-            for (int i = 0; i < 10; i++) {
-                try {
-                    Thread.sleep(100);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+//        new Thread(() -> {
+//            for (int i = 0; i < 10; i++) {
+//                try {
+//                    Thread.sleep(100);
+//                } catch (InterruptedException e) {
+//                    e.printStackTrace();
+//                }
 //                gateway.send("Hello World: " + Instant.now());
-                text();
-            }
-        }).start();
+//            }
+//        }).start();
 
 
         return IntegrationFlow.from(
-//                Files.inboundAdapter(
-//                    Path.of(
-//                        SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions")
-//                    ).toFile()
-//                ).autoCreateDirectory(true),
-                "fileChannel"
+                Files.inboundAdapter(
+                    Path.of(
+                        SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions")
+                    ).toFile()
+                ).autoCreateDirectory(true),
+                p -> p.poller(pm -> pm.fixedDelay(1000))
             )
             .handle(
                 Files.outboundAdapter(
@@ -76,11 +70,11 @@ public class FileSyncIntegrationConfig {
 }
 
 
-//@MessagingGateway
-//interface MGateway {
-//
-//    @Gateway(requestChannel = "fileChannel")
-//    void send(String message);
-//
-//}
+@MessagingGateway
+interface MGateway {
+
+    @Gateway(requestChannel = "fileChannel")
+    void send(String message);
+
+}
 
