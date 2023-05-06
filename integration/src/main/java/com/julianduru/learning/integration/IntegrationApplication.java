@@ -9,25 +9,20 @@ import org.springframework.integration.annotation.Gateway;
 import org.springframework.integration.annotation.IntegrationComponentScan;
 import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.core.GenericHandler;
-import org.springframework.integration.core.GenericSelector;
 import org.springframework.integration.core.GenericTransformer;
 import org.springframework.integration.core.MessageSource;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.MessageChannels;
-import org.springframework.integration.dsl.context.IntegrationFlowContext;
 import org.springframework.integration.file.dsl.Files;
 import org.springframework.integration.file.transformer.FileToStringTransformer;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageChannel;
-import org.springframework.messaging.MessageHeaders;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 import org.springframework.util.SystemPropertyUtils;
 
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 @IntegrationComponentScan
 @SpringBootApplication
@@ -52,28 +47,17 @@ public class IntegrationApplication {
 
 
 	@Bean
-	MessageChannel greetingsRequests() {
+	MessageChannel requests() {
 		return MessageChannels.direct().get();
 	}
 
 
 
     @Bean
-    MessageChannel greetingsResults() {
+    MessageChannel replies() {
         return MessageChannels.direct().get();
     }
 
-
-//    @Bean
-//    ApplicationRunner runner(MyMessageSource myMessageSource, IntegrationFlowContext context) {
-//        return args -> {
-//            var hollaFlow = buildFlow(myMessageSource, 1, "holla");
-//            var helloFlow = buildFlow(myMessageSource, 2, "hello");
-//
-//            Set.of(hollaFlow, helloFlow)
-//                .forEach(flow -> context.registration(flow).register().start());
-//        };
-//    }
 
 
     public static String text() {
@@ -85,8 +69,7 @@ public class IntegrationApplication {
     @Bean
     public IntegrationFlow buildFlow() {
         return IntegrationFlow
-            .from(greetingsRequests())
-            .filter(String.class, source -> source.contains("holla"))
+            .from(requests())
             .transform(
                 (GenericTransformer<String, String>) String::toUpperCase
             )
@@ -94,35 +77,35 @@ public class IntegrationApplication {
                 System.out.println("Observing payload: " + payload);
                 return payload;
             })
-            .channel(greetingsResults())
+            .channel(replies())
             .get();
     }
 
 
 
-    @Bean
-    IntegrationFlow inboundFileSystemFlow() {
-        var inboundFileAdapter = Files.inboundAdapter(
-            Path.of(SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions")).toFile()
-        ).autoCreateDirectory(true);
-
-        return IntegrationFlow.from(inboundFileAdapter)
-            .transform(new FileToStringTransformer())
-            .channel(greetingsRequests())
-            .get();
-    }
-
-
-    @Bean
-    IntegrationFlow outboundFileSystemFlow() {
-        var outboundFileAdapter = Files.outboundAdapter(
-            Path.of(SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions_out")).toFile()
-        ).autoCreateDirectory(true);
-
-        return IntegrationFlow.from(greetingsResults())
-            .handle(outboundFileAdapter)
-            .get();
-    }
+//    @Bean
+//    IntegrationFlow inboundFileSystemFlow() {
+//        var inboundFileAdapter = Files.inboundAdapter(
+//            Path.of(SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions")).toFile()
+//        ).autoCreateDirectory(true);
+//
+//        return IntegrationFlow.from(inboundFileAdapter)
+//            .transform(new FileToStringTransformer())
+//            .channel(requests())
+//            .get();
+//    }
+//
+//
+//    @Bean
+//    IntegrationFlow outboundFileSystemFlow() {
+//        var outboundFileAdapter = Files.outboundAdapter(
+//            Path.of(SystemPropertyUtils.resolvePlaceholders("${HOME}/Downloads/code_revisions_out")).toFile()
+//        ).autoCreateDirectory(true);
+//
+//        return IntegrationFlow.from(replies())
+//            .handle(outboundFileAdapter)
+//            .get();
+//    }
 
 
 }
@@ -139,9 +122,9 @@ class Runner implements ApplicationRunner {
     }
 
     public void run(ApplicationArguments args) {
-        for (int i = 0; i < 100; i++) {
-            System.out.println(this.greetingsClient.greet(IntegrationApplication.text()));
-        }
+//        for (int i = 0; i < 100; i++) {
+            System.out.println("The reply is " + this.greetingsClient.greet("julian"));
+//        }
     }
 
 }
@@ -150,7 +133,7 @@ class Runner implements ApplicationRunner {
 @MessagingGateway
 interface GreetingsClient {
 
-    @Gateway(requestChannel = "greetingsRequests", replyChannel = "greetingsResults")
+    @Gateway(requestChannel = "requests", replyChannel = "replies")
     String greet(String text);
 
 }
