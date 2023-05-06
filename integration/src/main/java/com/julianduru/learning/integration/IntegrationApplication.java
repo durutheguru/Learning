@@ -11,6 +11,7 @@ import org.springframework.integration.annotation.MessagingGateway;
 import org.springframework.integration.core.GenericHandler;
 import org.springframework.integration.core.GenericTransformer;
 import org.springframework.integration.core.MessageSource;
+import org.springframework.integration.dsl.HeaderEnricherSpec;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.MessageChannels;
 import org.springframework.integration.file.dsl.Files;
@@ -23,6 +24,7 @@ import org.springframework.util.SystemPropertyUtils;
 
 import java.nio.file.Path;
 import java.time.Instant;
+import java.util.function.Consumer;
 
 @IntegrationComponentScan
 @SpringBootApplication
@@ -67,7 +69,7 @@ public class IntegrationApplication {
 
 
     @Bean
-    public IntegrationFlow buildFlow() {
+    public IntegrationFlow flow() {
         return IntegrationFlow
             .from(requests())
             .transform(
@@ -75,9 +77,11 @@ public class IntegrationApplication {
             )
             .handle((GenericHandler<String>) (payload, headers) -> {
                 System.out.println("Observing payload: " + payload);
+                headers.forEach((k, v) -> System.out.println(k + " : " + v));
                 return payload;
             })
-            .channel(replies())
+//            .enrichHeaders(headerEnricherSpec -> headerEnricherSpec.replyChannel(replies()))
+//            .channel(replies())
             .get();
     }
 
