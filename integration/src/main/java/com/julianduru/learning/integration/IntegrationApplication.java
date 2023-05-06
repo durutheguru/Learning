@@ -37,54 +37,54 @@ public class IntegrationApplication {
     }
 
 
-    @Component
-    static class MyMessageSource implements MessageSource<String> {
-
-        @Override
-        public Message<String> receive() {
-            return MessageBuilder.withPayload(text()).build();
-        }
-
-    }
-
-
-	@Bean
-	MessageChannel requests() {
-		return MessageChannels.direct().get();
-	}
-
-
-
-    @Bean
-    MessageChannel replies() {
-        return MessageChannels.direct().get();
-    }
-
-
-
-    public static String text() {
-        return Math.random() > .5 ? "hello World!! @ " + Instant.now() : "holla todo el mundo @ " + Instant.now();
-    }
-
-
-
-    @Bean
-    public IntegrationFlow flow() {
-        return IntegrationFlow
-            .from(requests())
-            .transform(
-                (GenericTransformer<String, String>) String::toUpperCase
-            )
-            .handle((GenericHandler<String>) (payload, headers) -> {
-                System.out.println("Observing payload: " + payload);
-                headers.forEach((k, v) -> System.out.println(k + " : " + v));
-                return payload;
-            })
-//            .enrichHeaders(headerEnricherSpec -> headerEnricherSpec.replyChannel(replies()))
-//            .channel(replies())
-            .get();
-    }
-
+//    @Component
+//    static class MyMessageSource implements MessageSource<String> {
+//
+//        @Override
+//        public Message<String> receive() {
+//            return MessageBuilder.withPayload(text()).build();
+//        }
+//
+//    }
+//
+//
+//	@Bean
+//	MessageChannel requests() {
+//		return MessageChannels.direct().get();
+//	}
+//
+//
+//
+//    @Bean
+//    MessageChannel replies() {
+//        return MessageChannels.direct().get();
+//    }
+//
+//
+//
+//    public static String text() {
+//        return Math.random() > .5 ? "hello World!! @ " + Instant.now() : "holla todo el mundo @ " + Instant.now();
+//    }
+//
+//
+//
+//    @Bean
+//    public IntegrationFlow flow() {
+//        return IntegrationFlow
+//            .from(requests())
+//            .transform(
+//                (GenericTransformer<String, String>) String::toUpperCase
+//            )
+//            .handle((GenericHandler<String>) (payload, headers) -> {
+//                System.out.println("Observing payload: " + payload);
+//                headers.forEach((k, v) -> System.out.println(k + " : " + v));
+//                return payload;
+//            })
+////            .enrichHeaders(headerEnricherSpec -> headerEnricherSpec.replyChannel(replies()))
+////            .channel(replies())
+//            .get();
+//    }
+//
 
 
 //    @Bean
@@ -114,31 +114,30 @@ public class IntegrationApplication {
 
 }
 
-
-
-@Component
-class Runner implements ApplicationRunner {
-
-    private final GreetingsClient greetingsClient;
-
-    public Runner(GreetingsClient greetingsClient) {
-        this.greetingsClient = greetingsClient;
-    }
-
-    public void run(ApplicationArguments args) {
-//        for (int i = 0; i < 100; i++) {
-            System.out.println("The reply is " + this.greetingsClient.greet("julian"));
-//        }
-    }
-
-}
-
-
-@MessagingGateway
-interface GreetingsClient {
-
-    @Gateway(requestChannel = "requests", replyChannel = "replies")
-    String greet(String text);
-
-}
-
+//
+//@Component
+//class Runner implements ApplicationRunner {
+//
+//    private final GreetingsClient greetingsClient;
+//
+//    public Runner(GreetingsClient greetingsClient) {
+//        this.greetingsClient = greetingsClient;
+//    }
+//
+//    public void run(ApplicationArguments args) {
+////        for (int i = 0; i < 100; i++) {
+//            System.out.println("The reply is " + this.greetingsClient.greet("julian"));
+////        }
+//    }
+//
+//}
+//
+//
+//@MessagingGateway
+//interface GreetingsClient {
+//
+//    @Gateway(requestChannel = "requests", replyChannel = "replies")
+//    String greet(String text);
+//
+//}
+//
