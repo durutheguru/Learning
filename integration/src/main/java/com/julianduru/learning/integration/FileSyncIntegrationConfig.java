@@ -20,8 +20,8 @@ import java.time.Instant;
 /**
  * created by Julian Duru on 06/05/2023
  */
-@IntegrationComponentScan
-@Configuration
+//@IntegrationComponentScan
+//@Configuration
 public class FileSyncIntegrationConfig {
 
 
