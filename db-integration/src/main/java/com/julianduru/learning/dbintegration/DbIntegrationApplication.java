@@ -48,7 +48,7 @@ public class DbIntegrationApplication {
 			.handle((GenericHandler<List<Customer>>) (payload, headers) -> {
 				log.debug("Customers: {}", payload);
 				headers.forEach((k, v) -> log.debug("{}: {}", k, v));
-				return payload;
+				return null;
 			})
 			.get();
 	}
