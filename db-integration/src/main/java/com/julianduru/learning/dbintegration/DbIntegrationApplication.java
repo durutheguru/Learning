@@ -1,16 +1,20 @@
 package com.julianduru.learning.dbintegration;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.integration.core.GenericHandler;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.messaging.MessageHeaders;
 
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Slf4j
 @SpringBootApplication
 public class DbIntegrationApplication {
 
@@ -40,6 +44,11 @@ public class DbIntegrationApplication {
 	IntegrationFlow jdbcIntegrationFlow(JdbcPollingChannelAdapter adapter) {
 		return IntegrationFlow
 			.from(adapter, p -> p.poller(pm -> pm.fixedRate(1000)))
+			.handle((GenericHandler<Customer>) (payload, headers) -> {
+				log.debug("Customer: {}", payload);
+				headers.forEach((k, v) -> log.debug("{}: {}", k, v));
+				return payload;
+			})
 			.get();
 	}
 
