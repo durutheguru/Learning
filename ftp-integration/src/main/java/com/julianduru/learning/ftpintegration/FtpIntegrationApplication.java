@@ -10,6 +10,8 @@ import org.springframework.integration.core.GenericHandler;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.file.RecursiveDirectoryScanner;
 import org.springframework.integration.file.dsl.Files;
+import org.springframework.integration.ftp.dsl.Ftp;
+import org.springframework.integration.ftp.session.DefaultFtpSessionFactory;
 import org.springframework.messaging.MessageHeaders;
 
 import java.io.File;
@@ -26,27 +28,44 @@ public class FtpIntegrationApplication {
 
 	@Bean
 	IntegrationFlow inboundFileFlow(
+		@Value("${HOME}/ftp/local") File localDirectory,
 		@Value("${HOME}/ftp/inbound") File inboundDirectory,
 		@Value("${HOME}/ftp/outbound") File outboundDirectory
 	) {
-		var filesIn = Files
-			.inboundAdapter(
-				inboundDirectory
-			)
-			.autoCreateDirectory(true)
-			.recursive(true)
-			.scanner(new RecursiveDirectoryScanner());
+
+		var ftpSessionFactory = new DefaultFtpSessionFactory();
+		ftpSessionFactory.setHost("localhost");
+		ftpSessionFactory.setPort(2221);
+		ftpSessionFactory.setUsername("admin");
+		ftpSessionFactory.setPassword("password");
+
+//		var filesIn = Files
+//			.inboundAdapter(
+//				inboundDirectory
+//			)
+//			.autoCreateDirectory(true)
+////			.preventDuplicates(true)
+//			.recursive(true)
+//			.scanner(new RecursiveDirectoryScanner());
+
+		var filesIn = Ftp
+			.inboundAdapter(ftpSessionFactory)
+			.autoCreateLocalDirectory(true)
+			.localDirectory(localDirectory)
+			.deleteRemoteFiles(true);
 
 		var filesOut = Files
 			.outboundAdapter(
 				outboundDirectory
 			)
-			.autoCreateDirectory(true);
+			.autoCreateDirectory(true)
+//			.deleteSourceFiles(true)
+			;
 
 		return IntegrationFlow
 			.from(
 				filesIn,
-				p -> p.poller(pm -> pm.fixedDelay(10L, TimeUnit.SECONDS))
+				p -> p.poller(pm -> pm.fixedDelay(1L, TimeUnit.SECONDS))
 			)
 			.handle(
 				(GenericHandler<File>) (payload, headers) -> {
