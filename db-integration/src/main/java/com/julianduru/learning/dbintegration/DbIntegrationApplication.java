@@ -7,7 +7,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.integration.core.GenericHandler;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
+import org.springframework.integration.jdbc.SqlParameterSourceFactory;
 import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
+import org.springframework.jdbc.core.namedparam.SqlParameterSource;
 import org.springframework.messaging.MessageHeaders;
 
 import javax.sql.DataSource;
@@ -26,16 +29,28 @@ public class DbIntegrationApplication {
 
 	@Bean
 	JdbcPollingChannelAdapter jdbcPollingChannelAdapter(DataSource dataSource) {
-		var adapter = new JdbcPollingChannelAdapter(dataSource, "SELECT * FROM CUSTOMER");
+		var adapter = new JdbcPollingChannelAdapter(dataSource, "SELECT * FROM CUSTOMER WHERE PROCESSED = FALSE");
 
 		adapter.setRowMapper((RowMapper<Customer>) (rs, rowNum) -> {
 			var id = rs.getLong("ID");
 			var firstName = rs.getString("FIRST_NAME");
 			var lastName = rs.getString("LAST_NAME");
 			var email = rs.getString("EMAIL");
+			var processed = rs.getBoolean("PROCESSED");
 
-			return new Customer(id, firstName, lastName, email);
+			return new Customer(id, firstName, lastName, email, processed);
 		});
+		adapter.setUpdateSql("UPDATE CUSTOMER SET PROCESSED = TRUE WHERE ID = :ID");
+		adapter.setUpdatePerRow(true);
+		adapter.setUpdateSqlParameterSourceFactory(
+			input -> {
+				if (input instanceof Customer customer) {
+					return new MapSqlParameterSource().addValue("ID", customer.id());
+				}
+				log.debug("Input is not a Customer: {}", input);
+				return null;
+			}
+		);
 
 		return adapter;
 	}
@@ -46,6 +61,7 @@ public class DbIntegrationApplication {
 		return IntegrationFlow
 			.from(adapter, p -> p.poller(pm -> pm.fixedRate(1000)))
 			.handle((GenericHandler<List<Customer>>) (payload, headers) -> {
+				log.debug("----------------------");
 				log.debug("Customers: {}", payload);
 				headers.forEach((k, v) -> log.debug("{}: {}", k, v));
 				return null;
@@ -58,8 +74,10 @@ public class DbIntegrationApplication {
 		Long id,
 		String firstName,
 		String lastName,
-		String email
+		String email,
+		boolean processed
 	) {}
 
 
 }
+
