@@ -68,7 +68,7 @@ public class OrderIntegrationFlow {
                 @Override
                 public Object handle(Object payload, MessageHeaders headers) {
                     System.out.println("------------------");
-                    
+
                     return null;
                 }
             })
