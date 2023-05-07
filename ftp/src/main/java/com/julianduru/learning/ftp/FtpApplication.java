@@ -5,6 +5,7 @@ import org.apache.ftpserver.ftplet.UserManager;
 import org.apache.ftpserver.listener.ListenerFactory;
 import org.apache.ftpserver.usermanager.PropertiesUserManagerFactory;
 import org.apache.ftpserver.usermanager.impl.BaseUser;
+import org.apache.ftpserver.usermanager.impl.WritePermission;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +13,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.util.SystemPropertyUtils;
 
 import java.io.File;
+import java.util.List;
 
 @SpringBootApplication
 public class FtpApplication {
@@ -50,6 +52,9 @@ public class FtpApplication {
 		baseUser.setPassword("password");
 		baseUser.setHomeDirectory(SystemPropertyUtils.resolvePlaceholders("${HOME}/ftp/admin"));
 		baseUser.setEnabled(true);
+		baseUser.setAuthorities(
+			List.of(new WritePermission())
+		);
 
 		userManager.save(baseUser);
 	}
