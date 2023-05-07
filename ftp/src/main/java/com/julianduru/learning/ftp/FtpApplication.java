@@ -50,7 +50,7 @@ public class FtpApplication {
 
 		baseUser.setName("admin");
 		baseUser.setPassword("password");
-		baseUser.setHomeDirectory(SystemPropertyUtils.resolvePlaceholders("${HOME}/ftp/admin"));
+		baseUser.setHomeDirectory(SystemPropertyUtils.resolvePlaceholders("${HOME}/ftp/inbound"));
 		baseUser.setEnabled(true);
 		baseUser.setAuthorities(
 			List.of(new WritePermission())
