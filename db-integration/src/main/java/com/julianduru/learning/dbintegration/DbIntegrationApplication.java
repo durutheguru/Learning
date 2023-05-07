@@ -13,6 +13,7 @@ import org.springframework.messaging.MessageHeaders;
 import javax.sql.DataSource;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 @Slf4j
 @SpringBootApplication
@@ -44,8 +45,8 @@ public class DbIntegrationApplication {
 	IntegrationFlow jdbcIntegrationFlow(JdbcPollingChannelAdapter adapter) {
 		return IntegrationFlow
 			.from(adapter, p -> p.poller(pm -> pm.fixedRate(1000)))
-			.handle((GenericHandler<Customer>) (payload, headers) -> {
-				log.debug("Customer: {}", payload);
+			.handle((GenericHandler<List<Customer>>) (payload, headers) -> {
+				log.debug("Customers: {}", payload);
 				headers.forEach((k, v) -> log.debug("{}: {}", k, v));
 				return payload;
 			})

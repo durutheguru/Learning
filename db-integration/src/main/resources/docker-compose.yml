@@ -5,6 +5,7 @@ services:
   postgres:
     image: postgres:latest
     environment:
+      PGDATA: /var/lib/postgresql/new_data
       POSTGRES_USER: usr
       POSTGRES_PASSWORD: pwd
       POSTGRES_DB: db
