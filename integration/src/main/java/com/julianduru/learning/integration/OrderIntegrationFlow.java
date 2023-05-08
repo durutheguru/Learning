@@ -29,7 +29,7 @@ public class OrderIntegrationFlow {
     @Bean
     ApplicationRunner runner(MessageChannel orders) {
         return event -> {
-            var order = new Order(1, Set.of(new LineItem("sku1"), new LineItem("sku2"));
+            var order = new Order(1, Set.of(new LineItem("sku1"), new LineItem("sku2")));
             orderDb.put(order.id(), order);
 
             var message = MessageBuilder
