@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.core.GenericHandler;
 import org.springframework.integration.dsl.IntegrationFlow;
+import org.springframework.integration.jdbc.JdbcMessageHandler;
 import org.springframework.integration.jdbc.JdbcPollingChannelAdapter;
 import org.springframework.integration.jdbc.SqlParameterSourceFactory;
 import org.springframework.jdbc.core.RowMapper;
@@ -67,6 +68,19 @@ public class DbIntegrationApplication {
 				return null;
 			})
 			.get();
+	}
+
+
+	@Bean
+	JdbcMessageHandler jdbcMessageHandler(DataSource dataSource) {
+		var updateHandler = new JdbcMessageHandler(dataSource, "UPDATE CUSTOMER SET PROCESSED = TRUE WHERE ID = ?");
+		updateHandler.setPreparedStatementSetter((ps, message) -> {
+			var customer = (Customer) message.getPayload();
+			ps.setInt(1, customer.id().intValue());
+			ps.execute();
+		});
+
+		return updateHandler;
 	}
 
 
