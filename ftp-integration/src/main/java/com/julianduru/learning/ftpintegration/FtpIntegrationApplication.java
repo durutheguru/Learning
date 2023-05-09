@@ -65,7 +65,7 @@ public class FtpIntegrationApplication {
 		return IntegrationFlow
 			.from(
 				filesIn,
-				p -> p.poller(pm -> pm.fixedDelay(1L, TimeUnit.SECONDS))
+				p -> p.poller(pm -> pm.fixedDelay(5L, TimeUnit.SECONDS))
 			)
 			.handle(
 				(GenericHandler<File>) (payload, headers) -> {
